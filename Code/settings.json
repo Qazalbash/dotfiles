@@ -1,0 +1,146 @@
+{
+    "editor.tokenColorCustomizations": {
+        "textMateRules": [
+            {
+                "scope": [
+                    "comment.block",
+                    "punctuation.definition.comment.end",
+                    "punctuation.definition.comment.begin"
+                ],
+                "settings": {
+                    "foreground": "#5195fb"
+                }
+            },
+            {
+                "scope": [
+                    "comment.block.documentation",
+                    "punctuation.definition.comment.begin.documentation",
+                    "punctuation.definition.comment.end.documentation"
+                ],
+                "settings": {
+                    "foreground": "#6bddb7"
+                }
+            },
+            {
+                "scope": ["comment.line", "punctuation.definition.comment"],
+                "settings": {
+                    "foreground": "#11c550d4"
+                }
+            }
+        ]
+    },
+    "workbench.iconTheme": "material-icon-theme",
+    "git.autofetch": true,
+    "editor.mouseWheelZoom": false,
+    "[markdown]": {
+        "editor.defaultFormatter": "svipas.prettier-plus"
+    },
+    "workbench.editorAssociations": {
+        "*.pdf": "latex-workshop-pdf-hook",
+        "*.html": "default"
+    },
+    "editor.insertSpaces": false,
+    "editor.stickyTabStops": true,
+    "markdown.preview.typographer": true,
+    "javascript.inlayHints.enumMemberValues.enabled": true,
+    "javascript.inlayHints.parameterTypes.enabled": true,
+    "javascript.inlayHints.propertyDeclarationTypes.enabled": true,
+    "javascript.inlayHints.variableTypes.enabled": true,
+    "editor.tabCompletion": "on",
+    "prettier.tabWidth": 4,
+    "[javascript]": {
+        "editor.defaultFormatter": "svipas.prettier-plus"
+    },
+    "[html]": {
+        "editor.defaultFormatter": "svipas.prettier-plus"
+    },
+    "editor.inlineSuggest.enabled": true,
+    "diffEditor.ignoreTrimWhitespace": false,
+    "github.copilot.enable": {
+        "*": true,
+        "yaml": true,
+        "plaintext": false,
+        "markdown": false,
+        "python": true
+    },
+    "editor.wordWrap": "on",
+    "python.formatting.provider": "yapf",
+    "[latex]": {
+        "editor.defaultFormatter": "James-Yu.latex-workshop"
+    },
+    "latex-workshop.latex.tools": [
+        // Compilation tools and commands
+        {
+            "name": "xelatex",
+            "command": "xelatex",
+            "args": [
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "-pdf",
+                "%DOCFILE%"
+            ]
+        },
+        {
+            "name": "pdflatex",
+            "command": "pdflatex",
+            "args": [
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "%DOCFILE%"
+            ]
+        },
+        {
+            "name": "bibtex",
+            "command": "bibtex",
+            "args": ["%DOCFILE%"]
+        }
+    ],
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "xelatex 🔃",
+            "tools": ["xelatex"]
+        },
+        {
+            "name": "pdflatex 🔃",
+            "tools": ["pdflatex"]
+        },
+        {
+            "name": "xelatex➞bibtex➞xelatex.2x 🔃",
+            "tools": ["xelatex", "bibtex", "xelatex", "xelatex"]
+        },
+        {
+            "name": "pdflatex➞bibtex➞pdflatex.2x 🔃",
+            "tools": ["pdflatex", "bibtex", "pdflatex", "pdflatex"]
+        }
+    ],
+    "[python]": {},
+    "latex-workshop.bibtex-fields.sort.enabled": true,
+    "workbench.sideBar.location": "right",
+    "[jsonc]": {
+        "editor.defaultFormatter": "svipas.prettier-plus"
+    },
+    "[c]": {
+        "editor.defaultFormatter": "ms-vscode.cpptools"
+    },
+    "[cpp]": {
+        "editor.defaultFormatter": "ms-vscode.cpptools"
+    },
+    "C_Cpp.clang_format_sortIncludes": true,
+    "C_Cpp.formatting": "clangFormat",
+    "editor.formatOnSave": true,
+    "editor.minimap.renderCharacters": false,
+    "editor.minimap.showSlider": "always",
+    "settingsSync.ignoredSettings": ["-C_Cpp.clang_format_path"],
+    "[json]": {
+        "editor.defaultFormatter": "svipas.prettier-plus"
+    },
+    "githubPullRequests.pullBranch": "never",
+    "editor.fontFamily": "Fira Code Retina",
+    "editor.fontLigatures": true,
+    "terminal.integrated.commandsToSkipShell": ["language-julia.interrupt"],
+    "window.zoomLevel": 1,
+    "workbench.colorTheme": "One Dark Pro Mix",
+    "terminal.integrated.defaultProfile.linux": "bash"
+}

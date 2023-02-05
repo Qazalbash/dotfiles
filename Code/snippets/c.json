@@ -1,0 +1,308 @@
+{
+    "opencl headers and macros": {
+        "prefix": "opencl_headers",
+        "body": [
+            "#define CL_USE_DEPRECATED_OPENCL_1_2_APIS",
+            "#define CL_TARGET_OPENCL_VERSION 300",
+            "#define MAX_SOURCE_SIZE (0x100000)\n",
+            "#include <stdio.h>",
+            "#include <CL/cl.h>"
+        ],
+        "description": "OpenCL headers and macros"
+    },
+
+    "device id": {
+        "prefix": "get_device_id",
+        "body": [
+            "cl_device_id device_id;\n",
+            "$1 = clGetDeviceIDs(NULL, CL_DEVICE_TYPE_GPU, 1, &device_id, NULL);\n",
+            "if ($1 != CL_SUCCESS) {",
+            "\tprintf(\"Error: %d. OpenCL could not get device.\", $1);",
+            "\treturn -1;\n}"
+        ],
+        "description": "OpenCL device id"
+    },
+
+    "context": {
+        "prefix": "create_context",
+        "body": [
+            "cl_context context = clCreateContext(NULL, 1, &device_id, NULL, NULL, &$1);\n",
+            "if ($1 != CL_SUCCESS) {",
+            "\tprintf(\"Error: %d. OpenCL could not create context.\", $1);",
+            "\treturn -1;\n}"
+        ],
+        "description": "OpenCL context"
+    },
+
+    "command queue": {
+        "prefix": "create_command_queue",
+        "body": [
+            "cl_command_queue queue = clCreateCommandQueue(context, device_id, 0, &$1);\n",
+            "if ($1 != CL_SUCCESS) {",
+            "\tprintf(\"Error: %d. OpenCL could not create command queue.\", $1);",
+            "\treturn -1;\n}"
+        ],
+        "description": "OpenCL command queue"
+    },
+
+    "read kernel file": {
+        "prefix": "read_kernel_file",
+        "body": [
+            "FILE* fp = fopen(\"$1\", \"r\");",
+            "fseek(fp, 0, SEEK_END);",
+            "size_t size = ftell(fp);\n",
+            "if (size == 0) {",
+            "\tprintf(\"Error: %d. kernel file has no function.\", $2);",
+            "\treturn -1;\n}\n",
+            "fseek(fp, 0, SEEK_SET);",
+            "char* source = (char*)malloc(size);",
+            "fread(source, 1, size, fp);",
+            "fclose(fp);"
+        ],
+        "description": "Read kernel file"
+    },
+
+    "create program": {
+        "prefix": "create_program",
+        "body": [
+            "cl_program program = clCreateProgramWithSource(",
+            "\tcontext, 1, (const char**)&source, &size, &$1);\n",
+            "if ($1 != CL_SUCCESS) {",
+            "\tprintf(\"Error: %d. OpenCL could not create program.\", $1);",
+            "\treturn -1;\n}"
+        ],
+        "description": "OpenCL program"
+    },
+
+    "build program": {
+        "prefix": "build_program",
+        "body": [
+            "$1 = clBuildProgram(program, 1, &device_id, NULL, NULL, NULL);\n",
+            "if ($1 != CL_SUCCESS) {",
+            "\tprintf(\"Error: %d. OpenCL could not build program.\", $1);",
+            "\treturn -1;\n}"
+        ],
+        "description": "OpenCL build program"
+    },
+
+    "create kernel": {
+        "prefix": "create_kernel",
+        "body": [
+            "cl_kernel kernel = clCreateKernel(program, \"$1\", &$2);\n",
+            "if ($2 != CL_SUCCESS) {",
+            "\tprintf(\"Error: %d. OpenCL could not create kernel.\", $2);",
+            "\treturn -1;\n}"
+        ],
+        "description": "OpenCL kernel"
+    },
+
+    "set kernel arguments": {
+        "prefix": "set_kernel_args",
+        "body": [
+            "$1 = clSetKernelArg(kernel, $2, sizeof($3), (void*)&$3);\n",
+            "if ($1 != CL_SUCCESS) {",
+            "\tprintf(\"Error: %d. OpenCL could not set kernel arguments.\", $1);",
+            "\treturn -1;\n}"
+        ],
+        "description": "OpenCL set kernel arguments"
+    },
+
+    "enqueue kernel": {
+        "prefix": "enqueue_kernel",
+        "body": [
+            "$1 = clEnqueueNDRangeKernel(queue, kernel, $2, NULL, $3, $4, 0, NULL, NULL);\n",
+            "if ($1 != CL_SUCCESS) {",
+            "\tprintf(\"Error: %d. OpenCL could not enqueue kernel.\", $1);",
+            "\treturn -1;\n}"
+        ],
+        "description": "OpenCL enqueue kernel"
+    },
+
+    "create buffer": {
+        "prefix": "create_buffer",
+        "body": [
+            "cl_mem $1 = clCreateBuffer(context, CL_MEM_READ_WRITE | CL_MEM_WRITE_ONLY | CL_MEM_READ_ONLY, sizeof($2), NULL, &$3);\n",
+            "if ($3 != CL_SUCCESS) {",
+            "\tprintf(\"Error: %d. OpenCL could not create buffer.\", $3);",
+            "\treturn -1;\n}"
+        ],
+        "description": "OpenCL create buffer"
+    },
+
+    "read buffer": {
+        "prefix": "read_buffer",
+        "body": [
+            "$1 = clEnqueueReadBuffer(queue, $2, CL_TRUE, 0, sizeof($3), $3, 0, NULL, NULL);\n",
+            "if ($1 != CL_SUCCESS) {",
+            "\tprintf(\"Error: %d. OpenCL could not read buffer.\", $1);",
+            "\treturn -1;\n}"
+        ],
+        "description": "OpenCL read buffer"
+    },
+
+    "write buffer": {
+        "prefix": "write_buffer",
+        "body": [
+            "$1 = clEnqueueWriteBuffer(queue, $2, CL_TRUE, 0, sizeof($3), $3, 0, NULL, NULL);\n",
+            "if ($1 != CL_SUCCESS) {",
+            "\tprintf(\"Error: %d. OpenCL could not write buffer.\", $1);",
+            "\treturn -1;\n}"
+        ],
+        "description": "OpenCL write buffer"
+    },
+
+    "finish queue": {
+        "prefix": "finish_queue",
+        "body": [
+            "$1 = clFinish(queue);\n",
+            "if ($1 != CL_SUCCESS) {",
+            "\tprintf(\"Error: %d. OpenCL could not finish queue.\", $1);",
+            "\treturn -1;\n}"
+        ],
+        "description": "OpenCL finish queue"
+    },
+
+    "release kernel": {
+        "prefix": "release_kernel",
+        "body": ["$1 = clReleaseKernel(kernel);\n"],
+        "description": "OpenCL release kernel"
+    },
+
+    "release program": {
+        "prefix": "release_program",
+        "body": ["$1 = clReleaseProgram(program);\n"],
+        "description": "OpenCL release program"
+    },
+
+    "release command queue": {
+        "prefix": "release_command_queue",
+        "body": [
+            "$1 = clReleaseCommandQueue(queue);\n",
+            "if ($1 != CL_SUCCESS) {",
+            "\tprintf(\"Error: %d. OpenCL could not release command queue.\", $1);",
+            "\treturn -1;\n}"
+        ],
+        "description": "OpenCL release command queue"
+    },
+
+    "release context": {
+        "prefix": "release_context",
+        "body": [
+            "$1 = clReleaseContext(context);\n",
+            "if ($1 != CL_SUCCESS) {",
+            "\tprintf(\"Error: %d. OpenCL could not release context.\", $1);",
+            "\treturn -1;\n}"
+        ],
+        "description": "OpenCL release context"
+    },
+
+    "release buffer": {
+        "prefix": "release_buffer",
+        "body": [
+            "$1 = clReleaseMemObject($2);\n",
+            "if ($1 != CL_SUCCESS) {",
+            "\tprintf(\"Error: %d. OpenCL could not release buffer.\", $1);",
+            "\treturn -1;\n}"
+        ],
+        "description": "OpenCL release buffer"
+    },
+
+    "release all": {
+        "prefix": "release_all",
+        "body": [
+            "$1 = clReleaseKernel(kernel);\n",
+            "if ($1 != CL_SUCCESS) {",
+            "\tprintf(\"Error: %d. OpenCL could not release kernel.\", $1);",
+            "\treturn -1;\n}\n",
+            "$1 = clReleaseProgram(program);\n",
+            "if ($1 != CL_SUCCESS) {",
+            "\tprintf(\"Error: %d. OpenCL could not release program.\", $1);",
+            "\treturn -1;\n}\n",
+            "$1 = clReleaseCommandQueue(queue);\n",
+            "if ($1 != CL_SUCCESS) {",
+            "\tprintf(\"Error: %d. OpenCL could not release command queue.\", $1);",
+            "\treturn -1;\n}\n",
+            "$1 = clReleaseContext(context);\n",
+            "if ($1 != CL_SUCCESS) {",
+            "\tprintf(\"Error: %d. OpenCL could not release context.\", $1);",
+            "\treturn -1;\n}\n",
+            "$1 = clReleaseMemObject($2);\n",
+            "if ($1 != CL_SUCCESS) {",
+            "\tprintf(\"Error: %d. OpenCL could not release buffer.\", $1);",
+            "\treturn -1;\n\n}"
+        ],
+        "description": "OpenCL release all"
+    },
+
+    "Print to console": {
+        "prefix": "opencl_template",
+        "body": [
+            "#define CL_USE_DEPRECATED_OPENCL_1_2_APIS",
+            "#define CL_TARGET_OPENCL_VERSION 300\n",
+            "#include <CL/cl.h>",
+            "#include <stdio.h>\n",
+            "int main(int argc, char** argv) {",
+            "\tconst char* kernel_file = \"$1\";",
+            "\tconst char* kernel_name = \"$2\";\n",
+            "\tcl_uint work_dim = $3;\n",
+            "\tconst size_t* global_work_size = (const size_t[]){$4};",
+            "\tconst size_t* local_work_size  = (const size_t[]){$5};\n",
+            "\tcl_device_id device_id;\n",
+            "\tcl_int err = clGetDeviceIDs(NULL, CL_DEVICE_TYPE_GPU, 1, &device_id, NULL);\n",
+            "\tif (err != CL_SUCCESS) {",
+            "\t\tprintf(\"Error: %d. OpenCL could not get device.\", err);",
+            "\t\treturn -1;",
+            "\t}\n",
+            "\tcl_context context = clCreateContext(NULL, 1, &device_id, NULL, NULL, &err);\n",
+            "\tif (err != CL_SUCCESS) {",
+            "\t\tprintf(\"Error: %d. OpenCL could not create context.\", err);",
+            "\t\treturn -1;",
+            "\t}\n",
+            "\tcl_command_queue queue = clCreateCommandQueue(context, device_id, 0, &err);\n",
+            "\tif (err != CL_SUCCESS) {",
+            "\t\tprintf(\"Error: %d. OpenCL could not create command queue.\", err);",
+            "\t\treturn -1;",
+            "\t}\n",
+            "\tFILE* fp = fopen(kernel_file, \"r\");",
+            "\tfseek(fp, 0, SEEK_END);",
+            "\tsize_t size = ftell(fp);\n",
+            "\tif (size == 0) {",
+            "\t\tprintf(\"Error: %d. kernel file has no function.\", err);",
+            "\t\treturn -1;",
+            "\t}\n",
+            "\tfseek(fp, 0, SEEK_SET);",
+            "\tchar* source = (char*)malloc(size);",
+            "\tfread(source, 1, size, fp);",
+            "\tfclose(fp);\n",
+            "\tcl_program program = clCreateProgramWithSource(",
+            "\t\tcontext, 1, (const char**)&source, &size, &err);\n",
+            "\tif (err != CL_SUCCESS) {",
+            "\t\tprintf(\"Error: %d. OpenCL could not create program.\", err);",
+            "\t\treturn -1;",
+            "\t}\n",
+            "\terr = clBuildProgram(program, 1, &device_id, NULL, NULL, NULL);\n",
+            "\tif (err != CL_SUCCESS) {",
+            "\t\tprintf(\"Error: %d. OpenCL could not build program.\", err);",
+            "\t\treturn -1;",
+            "\t}\n",
+            "\tcl_kernel kernel = clCreateKernel(program, kernel_name, &err);\n",
+            "\tif (err != CL_SUCCESS) {",
+            "\t\tprintf(\"Error: %d. OpenCL could not create kernel.\", err);",
+            "\t\treturn -1;",
+            "\t}\n",
+            "\tclEnqueueNDRangeKernel(queue, kernel, work_dim, NULL, global_work_size,",
+            "\t\t\t\t\t\t   local_work_size, 0, NULL, NULL);\n",
+            "\tclFinish(queue);\n",
+            "\tclReleaseKernel(kernel);",
+            "\tclReleaseProgram(program);",
+            "\tclReleaseCommandQueue(queue);",
+            "\tclReleaseContext(context);\n",
+            "\tfree(source);",
+            "\tfree(kernel_name);",
+            "\tfree(kernel_file);\n",
+            "\treturn 0;",
+            "}"
+        ],
+        "description": "OpenCL template for convinience"
+    }
+}

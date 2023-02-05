@@ -1,0 +1,9 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =7
+let g:netrw_dirhist_7='/home/gradf'
+let g:netrw_dirhist_6='/media/gradf/Habib University/6/ADA/weekly-challenge/wc04-wc04-q1-team-2'
+let g:netrw_dirhist_5='/home/gradf/Music'
+let g:netrw_dirhist_4='/home/gradf/.vscode'
+let g:netrw_dirhist_3='/home/gradf'
+let g:netrw_dirhist_2='/media/gradf/Habib University/6/CI/CI-stuff'
+let g:netrw_dirhist_1='/media/gradf/Personal/system-configuration/terminal-profile'
