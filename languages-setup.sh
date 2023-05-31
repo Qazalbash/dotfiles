@@ -1,10 +1,10 @@
 # C/C++
 
-sudo pacman -S --noconfirm gcc cmake make
+sudo pacman -S --noconfirm --needed gcc cmake make
 
 # Python3
 
-sudo pacman -S --noconfirm python-pip
+sudo pacman -S --noconfirm --needed python-pip
 pip3 install --upgrade pip
 pip3 install --upgrade setuptools
 pip3 install --upgrade wheel

@@ -1,6 +1,6 @@
 # essential downloads
 
-sudo pacman -S --noconfirm i3 cbatticon parcellite fish kitty feh
+sudo pacman -S --noconfirm --needed i3 cbatticon parcellite fish kitty feh
 
 # Nerd font setup
 
