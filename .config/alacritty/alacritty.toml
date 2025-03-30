@@ -1,8 +1,10 @@
-import = ["~/.config/alacritty/themes/themes/github_dark_high_contrast.toml"]
-
-[shell]
-program = "/bin/fish"
+[terminal.shell]
+program = "/usr/bin/fish"
 
 [font]
-normal = { family = "MonoLisa Nerd Font Mono", style = "Regular" }
+normal = { family = "MonoLisa", style = "Regular" }
 size = 15
+
+[general]
+import = ["~/.config/alacritty/themes/themes/github_dark.toml"]
+
