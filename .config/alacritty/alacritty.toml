@@ -2,9 +2,8 @@
 program = "/usr/bin/fish"
 
 [font]
-normal = { family = "MonoLisa", style = "Regular" }
+normal = { family = "Iosevka Term SS18", style = "Extended" }
 size = 15
 
 [general]
 import = ["~/.config/alacritty/themes/themes/github_dark.toml"]
-
