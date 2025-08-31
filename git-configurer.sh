@@ -7,6 +7,9 @@ sudo pacman -S --noconfirm --needed git --noconfirm
 git config --global user.name "Meesum Qazalbash"
 git config --global user.email "meesumqazalbash@gmail.com"
 
+# Signed Commits
+git config --global commit.gpgsign true
+
 # ssh-key generation
 
 ssh-keygen -t rsa -b 4096 -C "meesumqazalbash@gmail.com"
