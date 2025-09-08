@@ -7,3 +7,7 @@ set -x PATH $PATH /usr/local/cuda-12.9/bin
 set -x LD_LIBRARY_PATH $LD_LIBRARY_PATH /usr/local/cuda-12.9/lib64
 
 set -x PATH $PATH /usr/local/go/bin
+
+
+set -gx EDITOR "nano" # For ranger file manager
+set -gx VISUAL "nano" # For ranger file manager
