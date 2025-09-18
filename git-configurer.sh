@@ -9,6 +9,8 @@ git config --global user.email "meesumqazalbash@gmail.com"
 
 # Signed Commits
 git config --global commit.gpgsign true
+# Signed Tags
+git config --global tag.gpgsign true
 
 # ssh-key generation
 
