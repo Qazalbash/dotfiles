@@ -18,7 +18,7 @@ return require("packer").startup(function(use)
 	    config = function()
 		    require("configs.lualine")
 	    end,
-	    requires = { 'nvim-tree/nvim-web-devicons', opt = true }
+	    -- requires = { 'nvim-tree/nvim-web-devicons', opt = true }
     })
 
     -- Treesitter
@@ -32,4 +32,37 @@ return require("packer").startup(function(use)
         end,
     })
 
+    -- LazyGit
+    use({
+	"kdheepak/lazygit.nvim",
+    	-- optional for floating window border decoration
+    	requires = {"nvim-lua/plenary.nvim",},
+    })
+
+	-- File Explorer
+	use({
+		"nvim-neo-tree/neo-tree.nvim",
+		branch="v3.x",
+		requires = {
+			"nvim-lua/plenary.nvim",
+			"MunifTanjim/nui.nvim",
+			"nvim-tree/nvim-web-devicons",
+		},
+		config = function()
+			require("configs.neo-tree")
+		end,
+	})
+
+    -- LSP Support
+    use({
+        'neovim/nvim-lspconfig',
+        requires = {
+            -- Mason handles the installation of servers
+            'williamboman/mason.nvim',
+            'williamboman/mason-lspconfig.nvim',
+        },
+        config = function()
+            require("configs.lsp")
+        end
+    })
 end)
