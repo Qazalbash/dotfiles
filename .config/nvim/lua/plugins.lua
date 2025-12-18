@@ -65,4 +65,10 @@ return require("packer").startup(function(use)
             require("configs.lsp")
         end
     })
+
+    -- Multi-line
+    use({
+        'mg979/vim-visual-multi',
+        branch = 'master'
+    })
 end)

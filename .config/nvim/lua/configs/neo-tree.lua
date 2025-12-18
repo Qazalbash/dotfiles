@@ -16,8 +16,8 @@ require("neo-tree").setup({
     hijack_netrw_behavior = "open_current", 
     
     filtered_items = {
-      visible = false, 
-      hide_dotfiles = true,
+      visible = false,
+      hide_dotfiles = false,
       hide_gitignored = false,
       hide_by_name = { ".git" },
     },
