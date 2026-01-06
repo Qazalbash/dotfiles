@@ -1,4 +1,4 @@
 require("mason").setup()
-require("mason-lspconfig").setup()
-
-local lspconfig = require('lspconfig')
+require("mason-lspconfig").setup({
+    ensure_installed = { "lua_ls", "pyright" }
+})

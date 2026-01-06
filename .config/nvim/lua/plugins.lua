@@ -39,19 +39,27 @@ return require("packer").startup(function(use)
     	requires = {"nvim-lua/plenary.nvim",},
     })
 
-	-- File Explorer
-	use({
-		"nvim-neo-tree/neo-tree.nvim",
-		branch="v3.x",
-		requires = {
-			"nvim-lua/plenary.nvim",
-			"MunifTanjim/nui.nvim",
-			"nvim-tree/nvim-web-devicons",
-		},
-		config = function()
-			require("configs.neo-tree")
-		end,
-	})
+    use({
+        'nvim-telescope/telescope.nvim', tag = '*',
+        requires = { 
+            { 'nvim-lua/plenary.nvim'},
+            { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
+        },
+        config = function()
+            require("configs.telescope")
+        end,
+    })
+
+    -- File Explorer
+    use({
+        'nvim-tree/nvim-tree.lua',
+        requires = {
+            'nvim-tree/nvim-web-devicons', -- optional, for file icons
+        },
+        config = function ()
+            require("configs.tree")
+        end
+    })
 
     -- LSP Support
     use({
@@ -66,9 +74,25 @@ return require("packer").startup(function(use)
         end
     })
 
+    -- Autocompletion
+    use({
+        'hrsh7th/nvim-cmp',
+        requires = {
+            {'hrsh7th/cmp-nvim-lsp'},     -- LSP source for nvim-cmp
+            {'L3MON4D3/LuaSnip'},         -- Snippet engine
+            {'saadparwaiz1/cmp_luasnip'}, -- Snippet expansion
+            {'hrsh7th/cmp-buffer'},       -- Text in current buffer
+            {'hrsh7th/cmp-path'},         -- File system paths
+        },
+        config = function()
+            require("configs.autocomplete")
+        end,
+    })
+
     -- Multi-line
     use({
         'mg979/vim-visual-multi',
         branch = 'master'
     })
+
 end)

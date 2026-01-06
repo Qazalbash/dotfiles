@@ -1,3 +1,5 @@
+vim.g.mapleader = " "
+
 -- Yank into system clipboard
 vim.keymap.set({'n', 'v'}, '<leader>y', '"+y') -- yank motion
 vim.keymap.set({'n', 'v'}, '<leader>Y', '"+Y') -- yank line
@@ -10,14 +12,17 @@ vim.keymap.set({'n', 'v'}, '<leader>D', '"+D') -- delete line
 vim.keymap.set('n', '<leader>p', '"+p')  -- paste after cursor
 vim.keymap.set('n', '<leader>P', '"+P')  -- paste before cursor
 
+local builtin = require('telescope.builtin')
 
--- -- 1. Force reset the variable to ensure it's empty
--- vim.g.VM_maps = {}
---
--- -- 2. Define mappings using explicit square brackets for keys
--- --    Do NOT use 'vim.keymap.set' inside here. Just strings.
--- vim.g.VM_maps['Find Under']         = '<C-n>'
--- vim.g.VM_maps['Find Subword Under'] = '<C-n>'
--- vim.g.VM_maps['Add Cursor Down']    = '<C-M-Down>'
--- vim.g.VM_maps['Add Cursor Up']      = '<C-M-Up>'
+-- Basic file finding
+vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Find files' })
+vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Live grep' })
+vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Buffers' })
+vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Help tags' })
+
+-- Git specific
+vim.keymap.set('n', '<leader>gf', builtin.git_files, { desc = 'Search Git files' })
+
+-- Search word under cursor
+vim.keymap.set('n', '<leader>fw', builtin.grep_string, { desc = 'Find current word' })
 

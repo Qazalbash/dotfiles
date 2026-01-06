@@ -1,6 +1,9 @@
 -- Disable netrw at the very start of your init.lua
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
+--
+-- prevent the built-in vim.lsp.completion autotrigger from selecting the first item
+-- vim.opt.completeopt = { "menuone", "noselect", "popup" }
 
 require("maps")
 require("settings")
@@ -17,3 +20,4 @@ vim.o.smartindent = true -- Automatically indent new lines
 -- vim.o.wrap = false -- Disable line wrapping
 vim.o.cursorline = true -- Highlight the current line
 vim.o.termguicolors = true -- Enable 24-bit RGB colors
+
