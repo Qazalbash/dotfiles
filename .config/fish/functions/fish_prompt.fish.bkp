@@ -1,51 +1,38 @@
-function fish_prompt --description 'Write out the prompt'
-    set -l laststatus $status
+set -g CMD_DURATION 0
 
-    set -l git_info
-    if set -l git_branch (command git symbolic-ref HEAD 2>/dev/null | string replace refs/heads/ '')
-        set git_branch (set_color -o blue)"$git_branch"
-        set -l git_status
-        if not command git diff-index --quiet HEAD --
-            if set -l count (command git rev-list --count --left-right $upstream...HEAD 2>/dev/null)
-                echo $count | read -l ahead behind
-                if test "$ahead" -gt 0
-                    set git_status "$git_status"(set_color red)⬆
-                end
-                if test "$behind" -gt 0
-                    set git_status "$git_status"(set_color red)⬇
-                end
-            end
-            for i in (git status --porcelain | string sub -l 2 | sort | uniq)
-                switch $i
-                    case "."
-                        set git_status "$git_status"(set_color green)✚
-                    case " D"
-                        set git_status "$git_status"(set_color red)✖
-                    case "*M*"
-                        set git_status "$git_status"(set_color green)✱
-                    case "*R*"
-                        set git_status "$git_status"(set_color purple)➜
-                    case "*U*"
-                        set git_status "$git_status"(set_color brown)═
-                    case "??"
-                        set git_status "$git_status"(set_color red)≠
-                end
-            end
+function flash_fst; set_color -o fa0; end
+function flash_snd; set_color -o C00; end
+function flash_trd; set_color -o 666; end
+function flash_dim; set_color -o 333; end
+function flash_off; set_color normal; end
+function bc; command bc -l $argv; end
+
+function fish_prompt
+    set -l code $status
+
+    set -l prompt $PWD
+    set -l base (basename "$prompt")
+
+    printf (flash_snd)(begin
+        if test "$PWD" = "/"
+            test $code -eq 0; and echo (flash_fst)"/"(flash_off); or echo (flash_dim)"/"(flash_off)
         else
-            set git_status (set_color green):
+            echo ""
         end
-        set git_info "(git$git_status$git_branch"(set_color white)")"
-    end
+    end)(echo "$prompt" \
+    | sed "s|$HOME|"(begin # 2. Using $HOME specifically to match your '⌁' icon logic
+        test $code -eq 0; and echo (flash_fst); or echo (flash_dim)
+    end)"~"(flash_off)"|g" \
+    | sed "s|/|"(flash_snd)"/"(flash_off)"|g" \
+    | sed "s|"$base"|"(flash_fst)$base(flash_off)"|g")(flash_snd)(begin
+        test "$PWD" = "$HOME"; and echo ""; echo ""
+    end)(begin
+        if test "$PWD" = "/"
+            echo ""
+        else
+            echo ">"
+        end
+    end)(flash_off)
 
-    # Disable PWD shortening by default.
-    set -q fish_prompt_pwd_dir_length
-    or set -lx fish_prompt_pwd_dir_length 0
-
-    set_color -b black
-    printf '%s%s%s%s%s%s%s%s%s%s%s%s%s' (set_color -o white) '❰' (set_color green) $USER (set_color white) '❙' (set_color yellow) (prompt_pwd) (set_color white) $git_info (set_color white) '❱' (set_color white)
-    if test $laststatus -eq 0
-        printf "%s✔%s≻%s " (set_color -o green) (set_color white) (set_color normal)
-    else
-        printf "%s✘%s≻%s " (set_color -o red) (set_color white) (set_color normal)
-    end
+    echo -e "\n> "
 end
