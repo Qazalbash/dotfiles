@@ -3,7 +3,11 @@ program = "/usr/bin/fish"
 
 [font]
 normal = { family = "Iosevka Term SS18", style = "Extended" }
-size = 15
+# normal = { family = "Google Sans Mono", style = "Semibold"}
+
+size = 14
 
 [general]
 import = ["~/.config/alacritty/themes/themes/github_dark.toml"]
+# import = ["~/.config/alacritty/themes/themes/everforest_light.toml"]
+
