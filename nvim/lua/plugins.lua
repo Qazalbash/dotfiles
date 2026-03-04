@@ -95,4 +95,11 @@ return require("packer").startup(function(use)
         branch = 'master'
     })
 
+    use({
+     "lukas-reineke/indent-blankline.nvim",
+        config = function()
+            require("configs.indentblank")
+        end
+    })
+
 end)

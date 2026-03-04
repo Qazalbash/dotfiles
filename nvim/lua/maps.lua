@@ -25,4 +25,3 @@ vim.keymap.set('n', '<leader>gf', builtin.git_files, { desc = 'Search Git files'
 
 -- Search word under cursor
 vim.keymap.set('n', '<leader>fw', builtin.grep_string, { desc = 'Find current word' })
-
