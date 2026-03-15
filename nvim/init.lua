@@ -1,23 +1,51 @@
--- Disable netrw at the very start of your init.lua
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
+-- initialize nvim with lua code
 --
--- prevent the built-in vim.lsp.completion autotrigger from selecting the first item
--- vim.opt.completeopt = { "menuone", "noselect", "popup" }
+-- :author: Ricky Powell
+--
 
-require("maps")
-require("settings")
-require("plugins")
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
 
-vim.cmd.colorscheme "vscode"
+require("options")
 
-vim.o.number = true -- Enable line numbers
-vim.o.relativenumber = true -- Enable relative line numbers
-vim.o.tabstop = 4 -- Number of spaces a tab represents
-vim.o.shiftwidth = 4 -- Number of spaces for each indentation
-vim.o.expandtab = true -- Convert tabs to spaces
-vim.o.smartindent = true -- Automatically indent new lines
--- vim.o.wrap = false -- Disable line wrapping
-vim.o.cursorline = true -- Highlight the current line
-vim.o.termguicolors = true -- Enable 24-bit RGB colors
+require("keymaps")
 
+require("autocmd")
+
+require("filetypes")
+
+require("commands")
+
+-- setup with Lazy.nvim
+require("lazy").setup(
+  "plugins",
+  {
+    ui = {
+      border = "rounded",
+    },
+  }
+)
+
+-- Add the $CWD as a workspace folder to get
+-- the vim.lsp.buf.references() amoung all of the repo
+vim.lsp.buf.add_workspace_folder(vim.fn.getcwd())
+
+-- settings
+-- vim.cmd.colorscheme("catppuccin")
+-- vim.cmd.colorscheme("fluoromachine")
+-- vim.cmd.colorscheme("kanagawa")
+-- vim.cmd.colorscheme("vague")
+-- vim.cmd.colorscheme("evergarden")
+-- vim.cmd.colorscheme("rose-pine")
+-- vim.cmd.colorscheme("gruvbox")
+vim.cmd.colorscheme("vscode")
